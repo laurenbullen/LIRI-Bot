@@ -40,9 +40,7 @@ var concertThis = function(artist) {
 
 // Function for running spotify search. Returns the first 3 results for a searched song title.
 var spotifySong = function(song) {
-  if (song === undefined) {
-    song = "The Sign";
-  }
+  
   spotify.search({ type: "track", query: song }, function(err, data) {
     if (err) {
       return console.log("Error occurred: " + err);
@@ -55,6 +53,10 @@ var spotifySong = function(song) {
       console.log("Album: " + songs[i].album.name);
       console.log("---------------------------------");
     }
+    // should default to "The Sign" if the user choice is undefined
+    // if (!process.argv[3]) {
+    //     process.argv[3] = "The Sign";
+    //   }
   });
 };
 
@@ -75,6 +77,11 @@ var movieName = function(movie) {
     .catch(function(error) {
       console.log(error);
     });
+    // should default to "Mr. Nobody" if the user choice is undefined
+    // if (!process.argv[3]) {
+    //     process.argv[3] = "Mr. Nobody";
+    //     console.log("If you haven't watched "Mr. Nobody," then you should: <http://www.imdb.com/title/tt0485947/>It's on Netflix!")
+    //   }
 };
 
 // Takes info from random.txt file and runs function with that info. Takes in userChoice from below.

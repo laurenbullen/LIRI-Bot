@@ -1,1 +1,2 @@
 # LIRI-Bot
+LIRI stands for Language Interpretation and Recognition Interface. This bot application is a command line app that returns concert information for a chosen music artist, Spotify information for a chosen song, or movie data for a chosen movie based on the user command. 
