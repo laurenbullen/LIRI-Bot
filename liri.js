@@ -6,7 +6,7 @@ var fs = require("fs");
 var keys = require("./keys");
 var spotify = new Spotify(keys.spotify);
 
-// function for running bandsintown search
+// Function for running bandsintown search. Logs the first 3 concerts listed for artist.
 var concertThis = function(artist) {
   axios
     .get(
@@ -15,7 +15,7 @@ var concertThis = function(artist) {
         "/events?app_id=codingbootcamp"
     )
     .then(function(response) {
-      for (let i = 0; i < 5; i++) {
+      for (let i = 0; i < 3; i++) {
         console.log("Venue: " + response.data[i].venue.name);
         console.log(
           "Location: " +
@@ -35,9 +35,10 @@ var concertThis = function(artist) {
     .catch(function(error) {
       console.log(error);
     });
+    
 };
 
-// function for running spotify search
+// Function for running spotify search. Returns the first 3 results for a searched song title.
 var spotifySong = function(song) {
   if (song === undefined) {
     song = "The Sign";
@@ -47,25 +48,21 @@ var spotifySong = function(song) {
       return console.log("Error occurred: " + err);
     }
     var songs = data.tracks.items;
-    for (let i = 0; i < 5; i++) {
+    for (let i = 0; i < 3; i++) {
       console.log("Artist(s): " + songs[i].artists[0].name);
       console.log("Song Title: " + songs[i].name);
       console.log("Spotify Link: " + songs[i].external_urls.spotify);
       console.log("Album: " + songs[i].album.name);
       console.log("---------------------------------");
-      // console.log(songs)
     }
   });
 };
 
-// function for running OMDB movie search
+// Function for running OMDB movie search
 var movieName = function(movie) {
   axios
     .get("http://www.omdbapi.com/?t=" + movie + "&y=&plot=short&apikey=trilogy")
     .then(function(response) {
-      // if (movie === undefined) {
-      //     movie = "Mr Nobody"
-      //   }
       console.log("Title: " + response.data.Title);
       console.log("Year: " + response.data.Year);
       console.log("IMDB Rating: " + response.data.imdbRating);
@@ -80,8 +77,18 @@ var movieName = function(movie) {
     });
 };
 
-var doIt = function() {};
-// create random .txt file
+// Takes info from random.txt file and runs function with that info. Takes in userChoice from below.
+var doIt = function() {
+  fs.readFile("random.txt", "utf8", function(error, data) {
+    console.log(data);
+    var dataArr = data.split(",");
+    if (dataArr.length === 2) {
+      userChoice(dataArr[0], dataArr[1]);
+    } else if (dataArr.length === 1) {
+      userChoice(dataArr[0]);
+    }
+  });
+};
 
 var userChoice = function(command, userPick) {
   switch (command) {
@@ -105,3 +112,13 @@ var runCommand = function(arg1, arg2) {
   userChoice(arg1, arg2);
 };
 runCommand(process.argv[2], process.argv.slice(3).join(" "));
+
+// fs.appendFile("log.txt", concertThis, function(err){
+//     if(err){
+//         console.log(err)
+//     } else{
+//         console.log("Concert info added to log!")
+//     }
+// })
+
+
