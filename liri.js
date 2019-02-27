@@ -8,7 +8,6 @@ var spotify = new Spotify(keys.spotify);
 
 // Function for running bandsintown search. Logs the first 3 concerts listed for artist.
 var concertThis = function(artist) {
-  
   axios
     .get(
       "https://rest.bandsintown.com/artists/" +
@@ -17,7 +16,7 @@ var concertThis = function(artist) {
     )
     .then(function(response) {
       var divider =
-    "\n------------------------------------------------------------\n\n";
+        "\n------------------------------------------------------------\n\n";
       for (let i = 0; i < 3; i++) {
         var concertData = [
           "Venue: " + response.data[i].venue.name,
@@ -30,8 +29,7 @@ var concertThis = function(artist) {
             response.data[i].venue.country,
 
           "Date: " +
-            moment(response.data[i].venue.datetime).format("MM/DD/YYYY"),
-
+            moment(response.data[i].venue.datetime).format("MM/DD/YYYY")
         ].join("\n\n");
 
         // adds concertData to log.txt file
@@ -48,6 +46,10 @@ var concertThis = function(artist) {
 
 // Function for running spotify search. Returns the first 3 results for a searched song title.
 var spotifySong = function(song) {
+  // should display info for the song "The Sign" if userPick is undefined for Spotify song command (not currently working)
+  if (!song) {
+    song = "The Sign";
+  }
   spotify.search({ type: "track", query: song }, function(err, data) {
     if (err) {
       return console.log("Error occurred: " + err);
@@ -55,13 +57,12 @@ var spotifySong = function(song) {
     var songs = data.tracks.items;
     for (let i = 0; i < 3; i++) {
       var divider =
-    "\n------------------------------------------------------------\n\n";
+        "\n------------------------------------------------------------\n\n";
       var songData = [
-      "Artist(s): " + songs[i].artists[0].name,
-      "Song Title: " + songs[i].name,
-      "Spotify Link: " + songs[i].external_urls.spotify,
-      "Album: " + songs[i].album.name,
-  
+        "Artist(s): " + songs[i].artists[0].name,
+        "Song Title: " + songs[i].name,
+        "Spotify Link: " + songs[i].external_urls.spotify,
+        "Album: " + songs[i].album.name
       ].join("\n\n");
 
       // adds songData to log.txt file
@@ -70,23 +71,21 @@ var spotifySong = function(song) {
         console.log(songData);
       });
     }
-    // should default to "The Sign" if the user choice is undefined
-    // if (!process.argv[3]) {
-    //     process.argv[3] = "The Sign";
-    //   }
   });
 };
 
 // Function for running OMDB movie search
 var movieName = function(movie) {
-  if(!movie){
-    movie = "Mr. Nobody"
+  // should display info for the movie "Mr. Nobody" if userPick is undefined for movie command (not currently working)
+  if (!movie) {
+    movie = "Mr. Nobody";
   }
+
   axios
     .get("http://www.omdbapi.com/?t=" + movie + "&y=&plot=short&apikey=trilogy")
     .then(function(response) {
       var divider =
-    "\n------------------------------------------------------------\n\n";
+        "\n------------------------------------------------------------\n\n";
       var movieData = [
         "Title: " + response.data.Title,
         "Year: " + response.data.Year,
@@ -107,12 +106,6 @@ var movieName = function(movie) {
     .catch(function(error) {
       console.log(error);
     });
-
-  // should default to "Mr. Nobody" if the user choice is undefined
-  // if (!process.argv[3]) {
-  //     process.argv[3] = "Mr. Nobody";
-  //     console.log("If you haven't watched "Mr. Nobody," then you should: <http://www.imdb.com/title/tt0485947/>It's on Netflix!")
-  //   }
 };
 
 // Takes info from random.txt file and runs function with that info. Takes in userChoice from below.
@@ -150,4 +143,3 @@ var runCommand = function(arg1, arg2) {
   userChoice(arg1, arg2);
 };
 runCommand(process.argv[2], process.argv.slice(3).join(" "));
-
