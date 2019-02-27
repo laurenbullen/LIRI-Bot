@@ -8,6 +8,7 @@ var spotify = new Spotify(keys.spotify);
 
 // Function for running bandsintown search. Logs the first 3 concerts listed for artist.
 var concertThis = function(artist) {
+  
   axios
     .get(
       "https://rest.bandsintown.com/artists/" +
@@ -15,43 +16,59 @@ var concertThis = function(artist) {
         "/events?app_id=codingbootcamp"
     )
     .then(function(response) {
+      var divider =
+    "\n------------------------------------------------------------\n\n";
       for (let i = 0; i < 3; i++) {
-        console.log("Venue: " + response.data[i].venue.name);
-        console.log(
+        var concertData = [
+          "Venue: " + response.data[i].venue.name,
+
           "Location: " +
             response.data[i].venue.city +
             ", " +
             response.data[i].venue.region +
             ", " +
-            response.data[i].venue.country
-        );
-        console.log(
+            response.data[i].venue.country,
+
           "Date: " +
-            moment(response.data[i].venue.datetime).format("MM/DD/YYYY")
-        );
-        console.log("---------------------------------");
+            moment(response.data[i].venue.datetime).format("MM/DD/YYYY"),
+
+        ].join("\n\n");
+
+        // adds concertData to log.txt file
+        fs.appendFile("log.txt", concertData + divider, function(err) {
+          if (err) throw err;
+          console.log(concertData);
+        });
       }
     })
     .catch(function(error) {
       console.log(error);
     });
-    
 };
 
 // Function for running spotify search. Returns the first 3 results for a searched song title.
 var spotifySong = function(song) {
-  
   spotify.search({ type: "track", query: song }, function(err, data) {
     if (err) {
       return console.log("Error occurred: " + err);
     }
     var songs = data.tracks.items;
     for (let i = 0; i < 3; i++) {
-      console.log("Artist(s): " + songs[i].artists[0].name);
-      console.log("Song Title: " + songs[i].name);
-      console.log("Spotify Link: " + songs[i].external_urls.spotify);
-      console.log("Album: " + songs[i].album.name);
-      console.log("---------------------------------");
+      var divider =
+    "\n------------------------------------------------------------\n\n";
+      var songData = [
+      "Artist(s): " + songs[i].artists[0].name,
+      "Song Title: " + songs[i].name,
+      "Spotify Link: " + songs[i].external_urls.spotify,
+      "Album: " + songs[i].album.name,
+  
+      ].join("\n\n");
+
+      // adds songData to log.txt file
+      fs.appendFile("log.txt", songData + divider, function(err) {
+        if (err) throw err;
+        console.log(songData);
+      });
     }
     // should default to "The Sign" if the user choice is undefined
     // if (!process.argv[3]) {
@@ -62,26 +79,40 @@ var spotifySong = function(song) {
 
 // Function for running OMDB movie search
 var movieName = function(movie) {
+  if(!movie){
+    movie = "Mr. Nobody"
+  }
   axios
     .get("http://www.omdbapi.com/?t=" + movie + "&y=&plot=short&apikey=trilogy")
     .then(function(response) {
-      console.log("Title: " + response.data.Title);
-      console.log("Year: " + response.data.Year);
-      console.log("IMDB Rating: " + response.data.imdbRating);
-      console.log("Rotten Tomatoes Rating: " + response.data.Ratings[1].Value);
-      console.log("Country: " + response.data.Country);
-      console.log("Language: " + response.data.Language);
-      console.log("Plot: " + response.data.Plot);
-      console.log("Cast: " + response.data.Actors);
+      var divider =
+    "\n------------------------------------------------------------\n\n";
+      var movieData = [
+        "Title: " + response.data.Title,
+        "Year: " + response.data.Year,
+        "IMDB Rating: " + response.data.imdbRating,
+        "Rotten Tomatoes Rating: " + response.data.Ratings[1].Value,
+        "Country: " + response.data.Country,
+        "Language: " + response.data.Language,
+        "Plot: " + response.data.Plot,
+        "Cast: " + response.data.Actors
+      ].join("\n\n");
+
+      // adds movieData to log.txt file
+      fs.appendFile("log.txt", movieData + divider, function(err) {
+        if (err) throw err;
+        console.log(movieData);
+      });
     })
     .catch(function(error) {
       console.log(error);
     });
-    // should default to "Mr. Nobody" if the user choice is undefined
-    // if (!process.argv[3]) {
-    //     process.argv[3] = "Mr. Nobody";
-    //     console.log("If you haven't watched "Mr. Nobody," then you should: <http://www.imdb.com/title/tt0485947/>It's on Netflix!")
-    //   }
+
+  // should default to "Mr. Nobody" if the user choice is undefined
+  // if (!process.argv[3]) {
+  //     process.argv[3] = "Mr. Nobody";
+  //     console.log("If you haven't watched "Mr. Nobody," then you should: <http://www.imdb.com/title/tt0485947/>It's on Netflix!")
+  //   }
 };
 
 // Takes info from random.txt file and runs function with that info. Takes in userChoice from below.
@@ -119,13 +150,4 @@ var runCommand = function(arg1, arg2) {
   userChoice(arg1, arg2);
 };
 runCommand(process.argv[2], process.argv.slice(3).join(" "));
-
-// fs.appendFile("log.txt", concertThis, function(err){
-//     if(err){
-//         console.log(err)
-//     } else{
-//         console.log("Concert info added to log!")
-//     }
-// })
-
 
