@@ -19,7 +19,7 @@ This command should add to the log.txt file and return in the bash terminal the 
 
     * Date of the Event (use moment to format this as "MM/DD/YYYY")
 
-![image](../images/concert-this.png)    
+![image](/images/concert-this.png)    
 
 ### Spotify
 Uses the command: 
