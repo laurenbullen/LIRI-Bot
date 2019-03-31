@@ -18,7 +18,8 @@ This command should add to the log.txt file and return in the bash terminal the 
     * Venue location
 
     * Date of the Event (use moment to format this as "MM/DD/YYYY")
-    
+
+![image](../images/concert-this.png)    
 
 ### Spotify
 Uses the command: 
@@ -37,6 +38,7 @@ This command should add to the log.txt file and return in the bash terminal the 
 
     * If no song is provided then the program will default to "The Sign" by Ace of Base.
 
+![image](../images/spotify-this-song.png)
 
 ### Movies
 Uses the command: 
@@ -61,6 +63,7 @@ This command should add to the log.txt file and return in the bash terminal the 
 
     * Actors in the movie
 
+![image](../images/movie-this.png)
 
 ### Do what it says
 Uses the command: 
